@@ -39,6 +39,7 @@ import ai.chat2db.server.web.api.controller.ai.request.ChatQueryRequest;
 import ai.chat2db.server.web.api.controller.ai.request.ChatRequest;
 import ai.chat2db.server.web.api.controller.ai.rest.client.RestAIClient;
 import ai.chat2db.server.web.api.controller.ai.rest.listener.RestAIEventSourceListener;
+import ai.chat2db.server.web.api.controller.ai.sse.AiSseEmitter;
 import ai.chat2db.server.web.api.controller.ai.tongyi.client.TongyiChatAIClient;
 import ai.chat2db.server.web.api.controller.ai.tongyi.listener.TongyiChatAIEventSourceListener;
 import ai.chat2db.server.web.api.controller.ai.wenxin.client.WenxinAIClient;
@@ -72,10 +73,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -185,6 +183,16 @@ public class ChatController {
         return data;
     }
 
+
+    @GetMapping("/nl2sql")
+    public String nl2Sql(ChatQueryRequest queryRequest) throws IOException {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("uid", UUID.randomUUID().toString());
+        queryRequest.setPromptType(PromptType.NL_2_SQL.name());
+        SseEmitter sseEmitter = completions(queryRequest, headers);
+        return sseEmitter.toString();
+    }
+
     /**
      * SQL conversion model
      *
@@ -198,7 +206,7 @@ public class ChatController {
     public SseEmitter completions(ChatQueryRequest queryRequest, @RequestHeader Map<String, String> headers)
         throws IOException {
         //The default timeout is 30 seconds. If set to 0L, it will never timeout.
-        SseEmitter sseEmitter = new SseEmitter(CHAT_TIMEOUT);
+        SseEmitter sseEmitter = new AiSseEmitter(CHAT_TIMEOUT);
         String uid = headers.get("uid");
         if (StrUtil.isBlank(uid)) {
             throw new ParamBusinessException("uid");

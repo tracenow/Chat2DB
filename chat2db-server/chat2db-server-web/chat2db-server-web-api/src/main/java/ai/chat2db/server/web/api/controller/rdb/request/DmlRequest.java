@@ -24,7 +24,6 @@ public class DmlRequest extends DataSourceBaseRequest implements DataSourceConso
     /**
      * console id
      */
-    @NotNull
     private Long consoleId;
 
     /**

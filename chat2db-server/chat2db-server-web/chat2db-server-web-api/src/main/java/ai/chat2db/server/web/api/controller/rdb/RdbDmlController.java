@@ -67,6 +67,12 @@ public class RdbDmlController {
      */
     @RequestMapping(value = "/execute", method = {RequestMethod.POST, RequestMethod.PUT})
     public ListResult<ExecuteResultVO> manage(@RequestBody DmlRequest request) {
+        if (Objects.isNull(request.getConsoleId())) {
+            request.setConsoleId(1L);
+        }
+        if (Objects.isNull(request.getPageSizeAll())) {
+            request.setPageSizeAll(true);
+        }
         DlExecuteParam param = rdbWebConverter.request2param(request);
         ListResult<ExecuteResult> resultDTOListResult = dlTemplateService.execute(param);
         List<ExecuteResultVO> resultVOS = rdbWebConverter.dto2vo(resultDTOListResult.getData());

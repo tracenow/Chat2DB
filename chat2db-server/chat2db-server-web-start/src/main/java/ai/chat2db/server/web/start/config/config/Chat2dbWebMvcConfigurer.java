@@ -154,6 +154,16 @@ public class Chat2dbWebMvcConfigurer implements WebMvcConfigurer {
                         // 简单api token验证
                         String token = request.getHeader(API_TOKEN_KEY);
                         if (path.startsWith(API_PREFIX) && StringUtils.isNotBlank(apiToken) && Objects.equals(apiToken, token)) {
+                            LoginUser loginUser = LoginUser.builder()
+                                    .id(1L)
+                                    .nickName("api")
+                                    .admin(false)
+                                    .roleCode(RoleCodeEnum.USER.name())
+                                    .token(token)
+                                    .build();
+                            ContextUtils.setContext(Context.builder()
+                                    .loginUser(loginUser)
+                                    .build());
                             return true;
                         }
 
