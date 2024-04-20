@@ -36,7 +36,7 @@ public class DataSourceAccessBusinessServiceImpl implements DataSourceAccessBusi
         LoginUser loginUser = ContextUtils.getLoginUser();
         // private
         if (DataSourceKindEnum.PRIVATE.getCode().equals(dataSource.getKind())) {
-            if (loginUser.getId().equals(dataSource.getUserId())) {
+            if (Boolean.TRUE.equals(loginUser.getAdmin()) ||  loginUser.getId().equals(dataSource.getUserId())) {
                 return ActionResult.isSuccess();
             } else {
                 throw new PermissionDeniedBusinessException();
