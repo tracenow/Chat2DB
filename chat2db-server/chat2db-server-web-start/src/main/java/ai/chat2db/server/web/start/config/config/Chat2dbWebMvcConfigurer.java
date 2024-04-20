@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -37,6 +38,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Objects;
 
 /**
  * web project configuration
@@ -58,12 +60,17 @@ public class Chat2dbWebMvcConfigurer implements WebMvcConfigurer {
     private static final String[] FRONT_PERMIT_ALL = new String[] {"/favicon.ico", "/error", "/static/**",
         "/api/system", "/login", "/api/system/get_latest_version"};
 
+    private static final String API_TOKEN_KEY = "apiToken";
+
     @Resource
     private UserService userService;
     @Resource
     private TeamUserService teamUserService;
     @Resource
     private Chat2dbProperties chat2dbProperties;
+
+    @Value("${chat2db.api-token}")
+    private String apiToken;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -144,6 +151,12 @@ public class Chat2dbWebMvcConfigurer implements WebMvcConfigurer {
 //                        if(path.startsWith("/login")){
 //                            return true;
 //                        }
+                        // 简单api token验证
+                        String token = request.getHeader(API_TOKEN_KEY);
+                        if (path.startsWith(API_PREFIX) && StringUtils.isNotBlank(apiToken) && Objects.equals(apiToken, token)) {
+                            return true;
+                        }
+
                         if (path.startsWith(API_PREFIX)) {
                             response.getWriter().println(JSON.toJSONString(
                                 ActionResult.fail("common.needLoggedIn", I18nUtils.getMessage("common.needLoggedIn"),
