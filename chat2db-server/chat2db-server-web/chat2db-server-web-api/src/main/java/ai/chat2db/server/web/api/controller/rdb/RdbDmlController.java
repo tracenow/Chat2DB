@@ -67,6 +67,11 @@ public class RdbDmlController {
      */
     @RequestMapping(value = "/execute", method = {RequestMethod.POST, RequestMethod.PUT})
     public ListResult<ExecuteResultVO> manage(@RequestBody DmlRequest request) {
+        // fix openapi format error
+        String newSql = request.getSql()
+                .replaceAll("```sql", "")
+                .replaceAll("```", "");
+        request.setSql(newSql);
         if (Objects.isNull(request.getConsoleId())) {
             request.setConsoleId(1L);
         }
