@@ -183,20 +183,21 @@ public class ChatController {
         return data;
     }
 
-
-    @GetMapping("/nl2sql/prompt")
-    public String nl2SqlPrompt(ChatQueryRequest queryRequest) throws IOException {
-        queryRequest.setPromptType(PromptType.NL_2_SQL.name());
-        return buildPrompt(queryRequest);
-    }
-
-    @GetMapping("/nl2sql")
-    public String nl2Sql(ChatQueryRequest queryRequest) throws IOException {
+    @PostMapping("/nl2sql")
+    @CrossOrigin
+    public String nl2Sql(@RequestBody ChatQueryRequest queryRequest) throws IOException {
         Map<String, String> headers = new HashMap<>();
         headers.put("uid", UUID.randomUUID().toString());
         queryRequest.setPromptType(PromptType.NL_2_SQL.name());
         SseEmitter sseEmitter = completions(queryRequest, headers);
         return sseEmitter.toString();
+    }
+
+    @PostMapping("/nl2sql/prompt")
+    @CrossOrigin
+    public String nl2SqlPrompt(@RequestBody ChatQueryRequest queryRequest) throws IOException {
+        queryRequest.setPromptType(PromptType.NL_2_SQL.name());
+        return buildPrompt(queryRequest);
     }
 
     /**
