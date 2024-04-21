@@ -184,6 +184,12 @@ public class ChatController {
     }
 
 
+    @GetMapping("/nl2sql/prompt")
+    public String nl2SqlPrompt(ChatQueryRequest queryRequest) throws IOException {
+        queryRequest.setPromptType(PromptType.NL_2_SQL.name());
+        return buildPrompt(queryRequest);
+    }
+
     @GetMapping("/nl2sql")
     public String nl2Sql(ChatQueryRequest queryRequest) throws IOException {
         Map<String, String> headers = new HashMap<>();

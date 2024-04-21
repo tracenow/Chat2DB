@@ -48,7 +48,7 @@ public class OauthController {
         this.validateUser(user);
 
         // Successfully logged in without modifying the administrator password
-        if (this.validateAdmin(user)) {
+        if (this.validateAdmin(user, request)) {
             return DataResult.of(doLogin(user));
         }
 
@@ -59,9 +59,9 @@ public class OauthController {
         return DataResult.of(doLogin(user));
     }
 
-    private boolean validateAdmin(final @NotNull User user) {
+    private boolean validateAdmin(final @NotNull User user, final @NotNull LoginRequest request) {
         return RoleCodeEnum.ADMIN.getDefaultUserId().equals(user.getId()) && RoleCodeEnum.ADMIN.getPassword().equals(
-                user.getPassword());
+                request.getPassword());
     }
 
     private void validateUser(final User user) {
