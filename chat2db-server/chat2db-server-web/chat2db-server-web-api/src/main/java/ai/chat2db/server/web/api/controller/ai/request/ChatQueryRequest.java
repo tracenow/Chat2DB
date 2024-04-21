@@ -34,6 +34,11 @@ public class ChatQueryRequest extends DataSourceBaseRequest {
     private List<String> tableNames;
 
     /**
+     * table name list，for openapi
+     */
+    private String tableNameList;
+
+    /**
      * Target SQL data type
      * @see ai.chat2db.server.domain.support.enums.DbTypeEnum
      */

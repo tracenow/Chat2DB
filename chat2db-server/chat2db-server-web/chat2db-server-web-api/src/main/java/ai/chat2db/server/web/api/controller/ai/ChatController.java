@@ -196,6 +196,10 @@ public class ChatController {
     @PostMapping("/nl2sql/prompt")
     @CrossOrigin
     public String nl2SqlPrompt(@RequestBody ChatQueryRequest queryRequest) throws IOException {
+        if (StringUtils.isNotBlank(queryRequest.getTableNameList())
+                && CollectionUtils.isEmpty(queryRequest.getTableNames())) {
+            queryRequest.setTableNames(Arrays.stream(queryRequest.getTableNameList().split(",")).toList());
+        }
         queryRequest.setPromptType(PromptType.NL_2_SQL.name());
         return buildPrompt(queryRequest);
     }
