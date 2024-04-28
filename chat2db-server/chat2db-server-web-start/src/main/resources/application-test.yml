@@ -14,6 +14,6 @@ oss:
   bucket-name: ta-dgt-para
 
 echarts:
-  phantom-js-path: /tmp/phantomjs-2.1.1-macosx/bin/phantomjs
-  convert-js-path: /tmp/echarts/echarts-convert.js
+  phantom-js-path: /app/phantomjs/bin/phantomjs
+  convert-js-path: /app/echarts-convert.js
   generate-image-path: /tmp
