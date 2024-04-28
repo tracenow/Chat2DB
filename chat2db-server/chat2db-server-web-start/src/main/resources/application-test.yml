@@ -7,3 +7,13 @@ chat2db:
   gateway:
     base-url: http://test.sqlgpt.cn/gateway
     model-base-url: http://test.sqlgpt.cn/gateway
+
+oss:
+  endpoint: https://oss-cn-hangzhou.aliyuncs.com
+  endpoint-name: oss-cn-hangzhou.aliyuncs.com
+  bucket-name: ta-dgt-para
+
+echarts:
+  phantom-js-path: /tmp/phantomjs-2.1.1-macosx/bin/phantomjs
+  convert-js-path: /tmp/echarts/echarts-convert.js
+  generate-image-path: /tmp
