@@ -56,7 +56,7 @@ public class EChartsServiceImpl implements EChartsService {
     private void generateImageAndUploadToOSS(String option, String shellFileName, String imageFileName, String ossObjectName) {
         Path shelFilePath = Paths.get(shellFileName);
         try {
-            final String cmd = String.format("%s %s -options %s -outfile %s", phantomjsPath, convertJsPath, option, imageFileName);
+            final String cmd = String.format("%s %s -options %s -outfile %s", phantomjsPath, convertJsPath, JSON.toJSONString(option), imageFileName);
             // 生成用于生成图片的shell脚本
             Files.write(shelFilePath, cmd.getBytes(StandardCharsets.UTF_8));
             // 执行本地命令生成图片文件
@@ -70,7 +70,7 @@ public class EChartsServiceImpl implements EChartsService {
         } finally {
             try {
                 // 清理临时生成的shell以及png图像文件
-                Files.delete(shelFilePath);
+//                Files.delete(shelFilePath);
                 Files.delete(Paths.get(imageFileName));
             } catch (IOException e) {
                 throw new RuntimeException(e);

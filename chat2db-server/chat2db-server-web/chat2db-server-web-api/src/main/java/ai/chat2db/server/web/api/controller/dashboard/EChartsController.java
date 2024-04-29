@@ -22,7 +22,9 @@ public class EChartsController {
     public ImageResult generateImage(@RequestBody EChartsOptionRequest eChartsOptionRequest) {
         String newOption = eChartsOptionRequest.getOption()
                 .replaceAll("```json", "")
-                .replaceAll("```", "");
+                .replaceAll("```", "")
+                .replaceAll("\n", "");
+        log.info(newOption);
         return eChartsService.generateImage(newOption);
     }
 }
