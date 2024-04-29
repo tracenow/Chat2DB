@@ -70,7 +70,7 @@ public class EChartsServiceImpl implements EChartsService {
         } finally {
             try {
                 // 清理临时生成的shell以及png图像文件
-//                Files.delete(shelFilePath);
+                Files.delete(shelFilePath);
                 Files.delete(Paths.get(imageFileName));
             } catch (IOException e) {
                 throw new RuntimeException(e);

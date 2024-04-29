@@ -51,8 +51,9 @@ public class OauthController {
     }
 
     private boolean validateAdmin(final @NotNull User user) {
-        return RoleCodeEnum.ADMIN.getDefaultUserId().equals(user.getId()) && RoleCodeEnum.ADMIN.getPassword().equals(
-                user.getPassword());
+        String adminPassword = System.getProperty("admin.password", RoleCodeEnum.ADMIN.getPassword());
+        return RoleCodeEnum.ADMIN.getDefaultUserId().equals(user.getId())
+                && Objects.equals(adminPassword, user.getPassword());
     }
 
     private void validateUser(final User user) {
