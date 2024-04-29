@@ -17,6 +17,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,9 @@ public class OauthController {
     @Resource
     private UserService userService;
 
+    @Value("${admin.password}")
+    private String adminPassword;
+
     /**
      * Login with username and password
      *
@@ -52,7 +56,7 @@ public class OauthController {
     }
 
     private boolean validateAdmin(final @NotNull User user) {
-        String adminPassword = System.getenv("admin.password");
+        String adminPassword = this.adminPassword;
         if (StringUtils.isBlank(adminPassword)) {
             adminPassword = RoleCodeEnum.ADMIN.getPassword();
         }

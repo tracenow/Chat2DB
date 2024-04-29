@@ -18,6 +18,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,9 @@ public class OauthController {
 
     @Resource
     private UserService userService;
+
+    @Value("${admin.password}")
+    private String adminPassword;
 
     /**
      * Login with username and password
@@ -61,12 +65,12 @@ public class OauthController {
     }
 
     private boolean validateAdmin(final @NotNull User user, final @NotNull LoginRequest request) {
-        String adminPassword = System.getenv("admin.password");
+        String adminPassword = this.adminPassword;;
         if (StringUtils.isBlank(adminPassword)) {
             adminPassword = RoleCodeEnum.ADMIN.getPassword();
         }
         return RoleCodeEnum.ADMIN.getDefaultUserId().equals(user.getId())
-                && Objects.equals(adminPassword, user.getPassword());
+                && Objects.equals(adminPassword, request.getPassword());
     }
 
     private void validateUser(final User user) {
