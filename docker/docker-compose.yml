@@ -1,8 +1,8 @@
 version: '3'
 services:
   chat2db:
-    image: chat2db/chat2db:latest
-    container_name: chat2db-latest
+    image: insight_copilot/chat2db:v1.0.1
+    container_name: insight_copilot_chat2db
     volumes:
       - ~/.chat2db-docker:/root/.chat2db
     ports:
